@@ -48,12 +48,16 @@ public partial struct PlayerSystem : ISystem
     }
 
     private float nextShootTime;
+   
     private void Shoot(ref SystemState state)
     {
         if (inputComponent.pressingLMB && nextShootTime < SystemAPI.Time.ElapsedTime)
         {
-            EntityCommandBuffer ECB = new EntityCommandBuffer(Allocator.Temp);    
+            EntityCommandBuffer ECB = new EntityCommandBuffer(Allocator.Temp);
             Entity bulletEntity = entityManager.Instantiate(playerComponent.BulletPrefab);
+
+            // Add SpawnTimeComponent to track the bullet's lifespan
+            ECB.AddComponent(bulletEntity, new SpawnTimeComponent { Time = (float)SystemAPI.Time.ElapsedTime });
 
             ECB.AddComponent(bulletEntity, new BulletComponent { Speed = 10 });
 
@@ -69,4 +73,7 @@ public partial struct PlayerSystem : ISystem
             nextShootTime = (float)SystemAPI.Time.ElapsedTime + playerComponent.ShootCooldown;
         }
     }
+
+
+
 }
