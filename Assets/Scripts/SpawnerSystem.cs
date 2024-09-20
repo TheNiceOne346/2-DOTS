@@ -8,9 +8,7 @@ using Random = UnityEngine.Random;
 
 partial struct SpawnerSystem : ISystem
 {
-    private const int MaxEnemies = 10;
-
-
+   
     public void OnUpdate(ref SystemState state)
     {
         Camera mainCamera = Camera.main;
@@ -19,13 +17,7 @@ partial struct SpawnerSystem : ISystem
         {
             if (spawner.ValueRO.nextSpawnTime < SystemAPI.Time.ElapsedTime)
             {
-                // Check the current number of active enemies
-
-                // int activeEnemiesCount = SystemAPI.Query<RefRW<HealthComponent>>().Count();
-
-                //   if (activeEnemiesCount >= MaxEnemies) return; // Do not spawn if max is reached
-
-
+               
                 Entity newEntity = state.EntityManager.Instantiate(spawner.ValueRO.prefab);
 
                 // Random spawn logic
@@ -41,14 +33,8 @@ partial struct SpawnerSystem : ISystem
                 });
 
 
-
-
-
-
                 spawner.ValueRW.nextSpawnTime = (float)SystemAPI.Time.ElapsedTime + spawner.ValueRO.spawnRate;
-                // Add components to the new enemy entity
-               // state.EntityManager.AddComponentData(newEntity, new AITag());
-               // state.EntityManager.AddComponentData(newEntity, new HealthComponent { CurrentHealth = 40 });
+                
             }
         }
     }
