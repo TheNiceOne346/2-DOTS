@@ -56,9 +56,6 @@ public partial struct PlayerSystem : ISystem
             EntityCommandBuffer ECB = new EntityCommandBuffer(Allocator.Temp);
             Entity bulletEntity = entityManager.Instantiate(playerComponent.BulletPrefab);
 
-            // Add SpawnTimeComponent to track the bullet's lifespan
-            ECB.AddComponent(bulletEntity, new SpawnTimeComponent { Time = (float)SystemAPI.Time.ElapsedTime });
-
             ECB.AddComponent(bulletEntity, new BulletComponent { Speed = 10 });
 
             LocalTransform bulletTransform = entityManager.GetComponentData<LocalTransform>(bulletEntity);
